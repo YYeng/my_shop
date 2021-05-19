@@ -46,7 +46,11 @@ class _NewProductState extends State<NewProduct> {
                         Text('Product Detail',
                             style: TextStyle(
                                 fontSize: 26, fontWeight: FontWeight.bold)),
-
+                        Container(
+                            padding: EdgeInsets.only(top:15),
+                            alignment: Alignment.centerLeft,
+                            child: Text("Name",
+                                style: TextStyle( fontSize: 15,fontWeight: FontWeight.bold))),
                         TextFormField(
                           controller: name,
                           decoration: InputDecoration(
@@ -57,11 +61,15 @@ class _NewProductState extends State<NewProduct> {
                             if (value.isEmpty) {
                               return 'This field is required';
                             }
-
                             // Return null if the entered username is valid
                             return null;
                           },
                         ),
+                        Container(
+                            padding: EdgeInsets.only(top:15),
+                            alignment: Alignment.centerLeft,
+                            child: Text("Type",
+                                style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold))),
                         TextFormField(
                           controller: type,
                           decoration: InputDecoration(hintText: 'Type'),
@@ -71,6 +79,11 @@ class _NewProductState extends State<NewProduct> {
                             return null;
                           },
                         ),
+                        Container(
+                            padding: EdgeInsets.only(top:15),
+                            alignment: Alignment.centerLeft,
+                            child: Text("Price(RM)",
+                                style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold))),
                         TextFormField(
                             controller: price,
                             keyboardType: TextInputType.number,
@@ -82,6 +95,11 @@ class _NewProductState extends State<NewProduct> {
                                 return "This field is required";
                               return null;
                             }),
+                        Container(
+                            padding: EdgeInsets.only(top:15),
+                            alignment: Alignment.centerLeft,
+                            child: Text("Quantity",
+                                style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold))),
                         TextFormField(
                           controller: quantity,
                           keyboardType: TextInputType.number,
@@ -98,7 +116,7 @@ class _NewProductState extends State<NewProduct> {
                         SizedBox(height: 20),
                         Text("Add Image",
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold)),
+                                fontSize: 15, fontWeight: FontWeight.bold)),
                         SizedBox(height: 5),
                         GestureDetector(
                           onTap: () => {_onPictureSelectionDialog()},
@@ -236,30 +254,30 @@ class _NewProductState extends State<NewProduct> {
 
   void _onAddProduct() {
     setState(() {
-    String _name = name.text.toString();
-    String _type = type.text.toString();
-    String _price = price.text.toString();
-    String _quantity = quantity.text.toString();
-    
-    if (_image == null ||
-        _name.isEmpty ||
-        _type.isEmpty ||
-        _price.isEmpty ||
-        _quantity.isEmpty) {
-      Fluttertoast.showToast(
-          msg: "Please enter valid information of product!",
-          backgroundColor: Colors.red);
-    }
+      String _name = name.text.toString();
+      String _type = type.text.toString();
+      String _price = price.text.toString();
+      String _quantity = quantity.text.toString();
 
-    _addProduct(_name, _type, _price, _quantity);
+      if (_image == null ||
+          _name.isEmpty ||
+          _type.isEmpty ||
+          _price.isEmpty ||
+          _quantity.isEmpty) {
+        Fluttertoast.showToast(
+            msg: "Please enter valid information of product!",
+            backgroundColor: Colors.red);
+      }
 
-    return;
+      _addProduct(_name, _type, _price, _quantity);
+
+      return;
     });
   }
 
   //upload to database
   Future<void> _addProduct(
-    String name, String type, String price, String quantity) async {
+      String name, String type, String price, String quantity) async {
     String base64Image = base64Encode(_image.readAsBytesSync());
 
     http.post(
