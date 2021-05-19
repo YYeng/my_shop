@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyShop());
+import 'newproduct.dart';
 
-class MyShop extends StatefulWidget {
-  @override
-  _MyShopState createState() => _MyShopState();
-}
+void main() => runApp(MyApp());
 
-class _MyShopState extends State<MyShop> {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('My Shop'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello '),
-            
-          ),
-        ),
-         floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              // Add onPressed code here
-            
-            },
-            child: const Icon(Icons.add),
-            backgroundColor: Colors.blue,
-          ),
+    return MaterialApp(title: 'My Shop', home: MyShop());
+  }
+}
+
+class MyShop extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('New Product'),
       ),
-      
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => NewProduct()));
+        },
+      ),
     );
   }
 }
