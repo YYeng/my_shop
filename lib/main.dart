@@ -19,15 +19,19 @@ class MyShop extends StatefulWidget {
 }
 
 class _MyShopState extends State<MyShop> {
+  double screenHeight, screenWidth;
   String titlecenter = "Loading...";
   List _listproduct;
 
+  @override
   void initState() {
     super.initState();
-    _loadProducts();
+    _loadproduct();
   }
 
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text('New Product'),
@@ -44,19 +48,23 @@ class _MyShopState extends State<MyShop> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
-                          child: GridView.count(
-                              crossAxisCount: 2,
-                              children:
-                                  List.generate(_listproduct.length, (index) {
-                                return Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Card(
-                                        child: SingleChildScrollView(
-                                            child: Column(
-                                      mainAxisAlignment:MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          child: CachedNetworkImage(
+                        child: Center(
+                            child: GridView.count(
+                                crossAxisCount: 2,
+                                childAspectRatio:
+                                    (screenWidth / screenHeight) / 0.9,
+                                children:
+                                    List.generate(_listproduct.length, (index) {
+                                  return Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Card(
+                                          child: SingleChildScrollView(
+                                              child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: CachedNetworkImage(
                                               imageUrl:
                                                   "https://crimsonwebs.com/s270737/myshop/images/${_listproduct[index]['id']}.png",
                                               fit: BoxFit.cover,
@@ -65,32 +73,51 @@ class _MyShopState extends State<MyShop> {
                                                       scale: 1,
                                                       child:
                                                           CircularProgressIndicator()),
-                                             ),
-                                        ),
-                                        SizedBox(height: 20),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text("Product Name:",
+                                            ),
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  10, 0, 0, 0),
+                                              child: Text(
+                                                  "Name: " +
+                                                      _listproduct[index]
+                                                          ['name'],
                                                   style:
-                                                      TextStyle(fontSize: 16)),
-                                              SizedBox(height: 30),
-                                              GestureDetector(
-                                                child: Text(
-                                                    _listproduct[index]
-                                                        ["prname"],
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color:
-                                                            Colors.teal[900])),
-                                              ),
-                                            ]),
-                                        
-                                        
-                                      ],
-                                    ))));
-                              })))
+                                                      TextStyle(fontSize: 20))),
+                                          SizedBox(height: 10),
+                                          Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  10, 0, 0, 0),
+                                              child: Text(
+                                                  "Type: " +
+                                                      _listproduct[index]
+                                                          ['type'],
+                                                  style:
+                                                      TextStyle(fontSize: 20))),
+                                          SizedBox(height: 10),
+                                          Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  10, 0, 0, 0),
+                                              child: Text(
+                                                  "Price:RM " +
+                                                      _listproduct[index]
+                                                          ['price'],
+                                                  style:
+                                                      TextStyle(fontSize: 20))),
+                                          SizedBox(height: 10),
+                                          Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  10, 0, 0, 0),
+                                              child: Text(
+                                                  "Quantity: " +
+                                                      _listproduct[index]
+                                                          ['quantity'],
+                                                  style:
+                                                      TextStyle(fontSize: 20))),
+                                        ],
+                                      ))));
+                                }))),
+                      )
                     ],
                   )),
                 ),
@@ -106,20 +133,19 @@ class _MyShopState extends State<MyShop> {
     );
   }
 
-  void _loadProducts() async {
+  void _loadproduct() {
     http.post(
-        Uri.parse(
-            'https://crimsonwebs.com/s270737/myshop/php/loadproducts.php'),
+        Uri.parse("https://crimsonwebs.com/s270737/myshop/php/loadproduct.php"),
         body: {}).then((response) {
+      print(response.body);
       if (response.body == "nodata") {
-        titlecenter = "Sorry product available";
+        titlecenter = "Sorry no product";
+        return;
       } else {
         var jsondata = json.decode(response.body);
         _listproduct = jsondata["products"];
-
-        setState(() {
-          print(_listproduct);
-        });
+        setState(() {});
+        print(_listproduct);
       }
     });
   }
