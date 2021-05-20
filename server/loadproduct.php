@@ -9,10 +9,10 @@ if ($result->num_rows > 0){
     while ($row = $result -> fetch_assoc()){
         $prlist = array();
         $prlist[id] = $row['id'];
-        $prlist[prname] = $row['prname'];
-        $prlist[prtype] = $row['prtype'];
-        $prlist[prprice] = $row['prprice'];
-        $prlist[prqty] = $row['prqty'];
+        $prlist[name] = $row['prname'];
+        $prlist[type] = $row['prtype'];
+        $prlist[price] = $row['prprice'];
+        $prlist[qty] = $row['prqty'];
         $prlist[datecreated] = $row['datecreated'];
        
        array_push($response["products"],$prlist);
